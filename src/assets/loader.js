@@ -1,12 +1,9 @@
-import snake from './images/snake.png';
-import bomberFront from './images/Bomberman/Front/*.png';
-import bomberBack from './images/Bomberman/Back/*.png';
-import bomberRight from './images/Bomberman/Right/*.png';
-import bomberLeft from './images/Bomberman/Left/*.png';
+import reverseBlack from './images/reverse_black.png';
+import reverseNone from './images/reverse_cell.png';
+import reverseWhite from './images/reverse_white.png';
 
-export const bomberFrames = {
-    front: Object.values(bomberFront),
-    back: Object.values(bomberBack),
-    right: Object.values(bomberRight),
-    left: Object.values(bomberLeft),
+export const cellAsset = {
+    none: Object.values(reverseNone),
+    black: Object.values(reverseBlack),
+    white: Object.values(reverseWhite),
 };
