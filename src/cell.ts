@@ -1,5 +1,6 @@
 import { cellAsset } from './assets/loader';
 import * as PIXI from 'pixi.js';
+import {Board} from './board';
 
 interface CellAsset {
   none: string[];
@@ -31,9 +32,9 @@ export class Cell {
    * @param {number} state - cell status
    * @param {WebSocket} conn - websock
    */
-  constructor(x: number, y: number, color: number, state: number, conn: WebSocket) {
-    this._x = 130 * x;
-    this._y = 130 * y;
+  constructor(board: Board, x: number, y: number, color: number, state: number) {
+    this._x = 66 * x;
+    this._y = 66 * y;
     this._color = color;
     this._state = state;
 
@@ -42,10 +43,7 @@ export class Cell {
     this._sprite.buttonMode = true;
 
     this._sprite.on('pointerdown', () => {
-      const obj = {color: this.color, cell: {x: x, y: y, state: this.state}};
-      const msg = JSON.stringify(obj);
-      console.log(`request: ${msg}`)
-      conn.send(msg);
+      board.putStone(this)
     });
 
     this.reload();
