@@ -2,8 +2,29 @@
   "name": "pixitest",
   "version": "1.0.0",
   "description": "",
+  "jest": {
+     "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+     "transform": {
+      "^.+\\.ts$": "ts-jest"
+    },
+    "globals": {
+      "ts-jest": {
+        "tsConfig": "tsconfig.json"
+      }
+    },
+    "testMatch": [
+      "**/test/**/*.test.ts"
+    ],
+    "moduleNameMapper": {
+      "^#/(.+)": "<rootDir>/src/$1"
+    }
+  },
   "scripts": {
     "test": "jest",
+    "watch": "jest --watch",
     "start": "npm run clean && parcel src/index.html",
     "build": "npm run clean && parcel build src/index.html --public-url ./",
     "build_serve": "npm run build && http-server ./dist",

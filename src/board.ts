@@ -1,11 +1,11 @@
 import {Container, interaction, LineStyle} from 'pixi.js';
 import {Cell, CellState} from './cell';
-
+import {Subject} from './observer';
 
 /**
  * Board Class
  */
-export class Board {
+export class Board extends Subject {
   _board: Cell[][] = []; 
   _state: number;
   _conn: WebSocket;
@@ -13,6 +13,7 @@ export class Board {
    * Reverse Board object
    */
   constructor() {
+    super();
     const size = 8;
     for (let i = 0; i < size; i++) {
       this._board[i] = [];
@@ -48,9 +49,14 @@ export class Board {
    * @param {Cell} cell - selected cell object
    */
   putStone(cell: Cell) {
-    console.log(`state: ${this.state}`)
     if (this.state == null) return;
-    const obj = {cmd: 'set_stone', body: {color: cell.color, cell: {x: cell.x, y: cell.y, state: cell.state}}};
+    const obj = {
+      cmd: 'set_stone',
+      body: {
+        color: cell.color,
+        cell: {x: cell.idxX, y: cell.idxY, state: cell.state }
+      }
+    };
     const msg = JSON.stringify(obj);
     console.log(`request: ${msg}`)
     this._conn.send(msg);
@@ -78,6 +84,7 @@ export class Board {
     this._conn = conn;
     this._conn.onmessage = (event) => {
       console.log(`response: ${event.data}`)
+      this.notifyObservers();
       const data = JSON.parse(event.data);
       if (data['status'] == 0) {
         this.state = data['color'];
@@ -96,7 +103,6 @@ export class Board {
    * @param {WebSocket} conn - websocket
    */
   set conn(conn: WebSocket) {
-    console.log('set websocket')
     this._conn = conn;
     this._conn.onmessage = (event) => {
       console.log(`response: ${event.data}`)
@@ -112,5 +118,18 @@ export class Board {
         });
       });
     };
+  }
+
+  cellNum():number {
+    let size = 8;
+    this._board.forEach((line) => {
+      line.forEach((cell) => {
+        if (!cell.isEmpty()) {
+          size++;
+        }
+      });
+    });
+    console.log("empty cell: " + size);
+    return size;
   }
 }

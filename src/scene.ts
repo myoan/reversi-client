@@ -28,6 +28,8 @@ export class Scene extends Observer {
 
   update(s: Subject) {
     console.log("update!!");
+    let board = s as Board;
+    this.step(board.cellNum());
   }
 
   step(num: number) {

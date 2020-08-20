@@ -6,6 +6,10 @@
         "target": "es5",
         "sourceMap": true,
         "allowJs": true,
+        "baseUrl": "./src/",
+        "paths": {
+          "#/*": ["*"]
+        },
         "lib": [
             "es2017",
             "dom"

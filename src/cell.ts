@@ -1,13 +1,13 @@
 import { cellAsset } from './assets/loader';
 import * as PIXI from 'pixi.js';
 import {Board} from './board';
-
+ 
 interface CellAsset {
   none: string[];
   black: string[];
   white: string[];
 }
-
+ 
 export const CellState = {
   None: 0,
   Black: 1,
@@ -22,6 +22,8 @@ const asset: CellAsset = cellAsset;
 export class Cell {
   _x: number;
   _y: number;
+  idxX: number;
+  idxY: number;
   _state: number;
   _sprite: PIXI.Sprite;
   _color: number;
@@ -35,6 +37,8 @@ export class Cell {
   constructor(board: Board, x: number, y: number, color: number, state: number) {
     this._x = 66 * x;
     this._y = 66 * y;
+    this.idxX = x;
+    this.idxY = y;
     this._color = color;
     this._state = state;
 
@@ -105,6 +109,13 @@ export class Cell {
   set state(state: number) {
     this._state = state;
     this.reload();
+  }
+
+  /**
+   * @return {boolean} - if cell is empty, it returns true
+   */
+  isEmpty(): boolean {
+    return (this.state == 0);
   }
 
   /**
