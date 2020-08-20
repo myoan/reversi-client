@@ -99,27 +99,6 @@ export class Board extends Subject {
     };
   }
 
-  /**
-   * @param {WebSocket} conn - websocket
-   */
-  set conn(conn: WebSocket) {
-    this._conn = conn;
-    this._conn.onmessage = (event) => {
-      console.log(`response: ${event.data}`)
-      const data = JSON.parse(event.data);
-      if (data['status'] == 0) {
-        this.state = data['color'];
-      }
-      data['board'].forEach((line) => {
-        line.forEach((c) => {
-          const cell = this.fetch(c['x'], c['y']);
-          cell.color = this.state;
-          cell.state = c['state'];
-        });
-      });
-    };
-  }
-
   cellNum():number {
     let size = 8;
     this._board.forEach((line) => {
